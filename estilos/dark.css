@@ -1,0 +1,146 @@
+body {
+    font-family: sans-serif;
+    background: #31384A;
+    margin: 0 auto 0 auto;
+    width: 100%;
+    text-align: center;
+    margin: 20px 0px 20px 0px;
+    color: white;
+}
+
+h1 {
+    font-size: 1.5em;
+    color: #FFFFFF;
+}
+
+.box {
+    background: rgba(0,0,0,0.4);
+    width: 300px;
+    border-radius: 6px;
+    margin: 0 auto 0 auto;
+    padding: 0px 0px 70px 0px;
+    border:#2980b9 4px solid;
+}
+
+.usuario {
+    background: #ecf0f1;
+    border: #ccc 1px solid;
+    border-bottom: #ccc 2px solid;
+    padding: 8px;
+    width: 250px;
+    color: #AAAAAA;
+    margin-top: 10px;
+    font-size: 1em;
+    border-radius: 4px;
+}
+
+.contrasinal {
+    border-radius: 4px;
+    background: #ecf0f1;
+    border: #ccc 1px solid;
+    padding: 8px;
+    width: 250px;
+    font-size: 1em;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.error {
+    color: red;
+}
+
+.lista {
+    margin: auto;
+    align-self: center;
+}
+.lista th {
+    background-color: #6a6a68;
+}
+
+.lista td {
+    background-color: #a4a4a3;
+}
+.lista input {
+    background-color: #a4a4a3;
+    color: black;
+    text-align: center;
+    border: 0;
+}
+
+.profile {
+    width: 450px;
+    margin: auto;
+    background: rgba(0,0,0,0.4);
+    padding: 10px 20px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    border-radius: 7px;
+
+}
+
+h2 {
+    color: #FFF;
+    text-align: center;
+    margin:0;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+input[type="number"], select {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 7px;
+    box-sizing: border-box;
+    font-size: 17px;
+    border: none;
+}
+
+input[type="submit"],input[type="reset"]{
+    background-color: #31384A;
+    color: #fff;
+    padding: 5px;
+}
+
+
+#rol {  
+  background-color: #0563af;
+  color: white;
+  padding: 12px;
+  width: 250px;
+  border: none;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+  border-radius: 7px;
+}
+
+
+
+.imgStore {
+    width: 100px;
+    height: auto;    
+}
+
+.prod {
+    margin: auto;
+    align-self: center;
+    border: 1px solid green;
+}
+.prod th {
+    background-color: #6a6a68;
+    border: 1px solid green;
+}
+
+.prod td {
+    background-color: grey;    
+}
+.prod input {       
+    text-align: center;   
+}
+.prod label {
+    color:white;
+}
