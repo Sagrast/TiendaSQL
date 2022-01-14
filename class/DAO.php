@@ -40,19 +40,27 @@ function leerProdutos($ruta) {
 
 public static function leerProdutosBDD(){  
     $conexion = new Connect();  
-    $con = $conexion->conexion();
-    var_dump($conexion);
+    $con = $conexion->conexion();    
     $select = $con->prepare('SELECT * FROM productos');
-    $select ->execute();    
+    $select->execute();    
     $data = array();
+    $resultado = array();
     if (!$select){
         $DATA['Error']= "Error de Consulta de Conexión";
     } else {
-        while ($row = $select->fetch(PDO::FETCH_ASSOC)){
-            $data[] = $row;
+        while ($row = $select->fetch(PDO::FETCH_ASSOC)){                                    
+            $data[] = $row;            
+            
         }
+        
     }
-    return $data;
+    foreach($data as $d){
+        $producto = new Produtos($d['codigoProd'],$d['nome'],$d['descricion'],$d['unidades'],$d['prezo'],$d['fotos'],$d['ive']);
+        $resultado[] = $producto;
+    }
+    return $resultado;
+
+    
 }
 
 /*
@@ -80,6 +88,7 @@ function leerUsuarios($ruta) {
 
  public static function userBDD() {
      $conexion = new Connect();
+
 
  }
 
