@@ -38,9 +38,12 @@ function leerProdutos($ruta) {
 
 */
 
-public static function leerProdutosBDD(){    
-    $tenda = new PDO('mysql:host=localhost;dbname=tienda',"phpmyadmin","abc123.");
-    $select = $tenda->query('Select * from productos');
+public static function leerProdutosBDD(){  
+    $conexion = new Connect();  
+    $con = $conexion->conexion();
+    var_dump($conexion);
+    $select = $con->prepare('SELECT * FROM productos');
+    $select ->execute();    
     $data = array();
     if (!$select){
         $DATA['Error']= "Error de Consulta de Conexión";
@@ -71,6 +74,14 @@ function leerUsuarios($ruta) {
     fclose($fp);
     return $arrayDatos;
 }
+/*
+  --------------------- LEER BDD USUARIOS --------------------------------------------
+ */
+
+ public static function userBDD() {
+     $conexion = new Connect();
+
+ }
 
 /*
   -------------------------------------- ENCRIPTAR CONTRASEÑA ----------------------------------------

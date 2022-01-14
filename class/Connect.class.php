@@ -5,7 +5,7 @@
     Fecha: 12/01/2022
 */
 
-     class Config {
+     class Connect {
 
         private $hostname = 'localhost';
         private $login = 'phpmyadmin';
@@ -15,15 +15,14 @@
         
     
      public function conexion(){
-        $conectionString = "mysql:host = " . $this->hostname.";dbname = " . $this->database.",charset=utf8";
+        $conectionString = "mysql:host = $this->hostname;dbname = $this->dataBase,charset=utf8";
         try {
-            $this ->conect = new PDO($conectionString,$this->usuario,$this->password);
-            $this->conect ->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);          
+            $this ->conect = new PDO($conectionString,$this->login,$this->pass);
+            $this->conect ->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+            return $this->conect;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
      }
 
      }
-
-?>
