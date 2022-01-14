@@ -15,7 +15,8 @@
         
     
      public function conexion(){
-        $conectionString = "mysql:host = $this->hostname;dbname = $this->dataBase,charset=utf8";
+        $conectionString = "mysql:host=$this->hostname;dbname=$this->dataBase;charset=utf8";
+        var_dump($conectionString);
         try {
             $this ->conect = new PDO($conectionString,$this->login,$this->pass);
             $this->conect ->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
