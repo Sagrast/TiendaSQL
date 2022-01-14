@@ -1,7 +1,7 @@
 <?php
 include_once "./class/Users.class.php";
 include_once "./class/Produtos.class.php";
-include_once "./class/Config.class.php";
+include_once "./class/Connect.class.php";
 class DAO {
 
 
@@ -33,9 +33,24 @@ function leerProdutos($ruta) {
 
 /* 
 
+------------------------------------ LEER BDD -------------------------------------------
 
 
 */
+
+public static function leerProdutosBDD(){    
+    $tenda = new PDO('mysql:host=localhost;dbname=tienda',"phpmyadmin","abc123.");
+    $select = $tenda->query('Select * from productos');
+    $data = array();
+    if (!$select){
+        $DATA['Error']= "Error de Consulta de Conexión";
+    } else {
+        while ($row = $select->fetch(PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
+    }
+    var_dump($data);
+}
 
 /*
   --------------------- LEER USUARIOS --------------------------------------------
