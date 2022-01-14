@@ -58,8 +58,9 @@ session_start();
 
 
         //Almacenamos en una variable el array del inventario de la tienda.        
-        $stock = DAO::leerProdutos("productos.csv");
+        $stock = DAO::leerProdutosBDD();
         $error = "";
+        var_dump($stock);
 
         //Mostramos la tabla de contenidos de la tienda.
         ?>
@@ -72,7 +73,6 @@ session_start();
                 <th>Unidades</th>
                 <th>Prezo</th>
                 <th>IVE</th>
-                <th>Prezo Con IVE</th>
                 <th>Mercar</th>
             </tr>
 <?php
@@ -80,14 +80,13 @@ foreach ($stock as $productos) {
     ?>
                 <tr>
                 <form method ="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                    <td><img class="imgStore" src="<?php echo $productos->getFotos() ?>"/></td>
-                    <td><input type="text" value="<?php echo $productos->getNome(); ?>"disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->getDescricion(); ?>" disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->getUnidades(); ?>" disabled /></td>
-                    <td><input type="text" value="<?php echo $productos->getPrezo(); ?>" disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->getIve(); ?>" disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->prezoConIVE(); ?>" disabled/></td>
-                    <input type="hidden" value="<?php echo $productos->getCodigo() ?>" name="codigo"/>
+                    <td><img class="imgStore" src="<?php echo $productos['fotos'] ?>"/></td>
+                    <td><input type="text" value="<?php echo $productos['nome']; ?>"disabled/></td>
+                    <td><input type="text" value="<?php echo $productos['descricion']; ?>" disabled/></td>
+                    <td><input type="text" value="<?php echo $productos['unidades']; ?>" disabled /></td>
+                    <td><input type="text" value="<?php echo $productos['prezo']; ?>" disabled/></td>
+                    <td><input type="text" value="<?php echo $productos['ive']; ?>" disabled/></td>                    
+                    <input type="hidden" value="<?php echo $productos['codigoProd']; ?>" name="codigo"/>
     <?php
     if (isset($_SESSION['userSesion'])) {
         echo '<td><input type="submit" name="engadir" value="engadir"></td>';

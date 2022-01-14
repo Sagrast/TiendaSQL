@@ -1,5 +1,5 @@
 <?php
     include "./class/DAO.php";
 
-    DAO::leerProdutosBDD();
+    var_dump(DAO::leerProdutosBDD());
 ?>

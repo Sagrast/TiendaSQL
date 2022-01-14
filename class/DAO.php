@@ -49,7 +49,7 @@ public static function leerProdutosBDD(){
             $data[] = $row;
         }
     }
-    var_dump($data);
+    return $data;
 }
 
 /*
