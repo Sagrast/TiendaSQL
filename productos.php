@@ -28,8 +28,8 @@ include_once './class/Produtos.class.php';
         session_start();
 
 //Array que contiene los CSV
-        $database = DAO::leerUsuarios("usuarios.csv");
-        $stock = DAO::leerProdutos("productos.csv");
+        $database = DAO::userBDD();
+        $stock = DAO::productsBDD();
         //Inicialización de variables.
 
         $codigoErro = $nomeErro = $descricionErro = $prezoErro = $unidadesErro = $fotosErro = $iveErro = "";

@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS usuarios;
 CREATE TABLE IF NOT EXISTS usuarios (
     codigoUser SERIAL,
     rol varchar(15),
-    userLogin VARCHAR(30),
+    userLogin VARCHAR(30) UNIQUE,
     contrasinal VARCHAR(120),
     nome  VARCHAR(150),
     enderezo VARCHAR(150),

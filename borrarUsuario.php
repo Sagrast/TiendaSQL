@@ -21,7 +21,7 @@ if (!isset($_SESSION['userSesion'])) {
     <body>
         <?php
         //Carga del CSV en un array
-        $usuarios = DAO::leerUsuarios("usuarios.csv");
+        $usuarios = DAO::userBDD();
         //Variable que contendrá la ID a buscar.
         $id = "";
         $adminError = "No eres Administrador";
@@ -32,13 +32,9 @@ if (!isset($_SESSION['userSesion'])) {
         }
 
         //Comprobamos que el usuario sea administrador para poder borrar.
-        if (DAO::esAdmin($_SESSION['userSesion'], $usuarios)) {
-            //En un nuevo array almacenamos la salida del metodo Borrar usuario.
-            $borrado = DAO::borrarUsuario($id, $usuarios);
-            //Ordenamos el array para eliminar campos vacíos.
-            $ordenado = array_values($borrado);
-            //Llamamos al metodo escribir CSV, le pasamos el nombre del archivo y el array que ha de escribir.
-            DAO::escribirUsuarios("usuarios.csv", $ordenado);
+        if (DAO::esAdmin($_SESSION['userSesion'], $usuarios)) {           
+            $borrado = DAO::deleteBDD($id);
+            
             header("Location: usuarios.php");
         } else {
             die("Non tes permisos de Administrador. Debe <a href='login.php'>identificarse</a>.<br/>");

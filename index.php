@@ -58,9 +58,9 @@ session_start();
 
 
         //Almacenamos en una variable el array del inventario de la tienda.        
-        $stock = DAO::leerProdutosBDD();
+        $stock = DAO::productsBDD();
         $error = "";
-        var_dump($stock);
+        
 
         //Mostramos la tabla de contenidos de la tienda.
         ?>

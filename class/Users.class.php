@@ -14,7 +14,10 @@ class Users {
     private $nome;
     private $enderezo;
     private $email;
+    private $codigo;
 
+    //Dado que el código de usuario ahora se genera de forma Auto Incremental cuando se inserta un articulo en la bdd
+    //Se retira la exigencia de este en el constructor y se le da valor a través del Setter cuando sea necesario.
     public function __construct($rol, $login, $contrasinal, $nome, $enderezo, $email) {
         $this->rol = $rol;
         $this->login = $login;
@@ -25,6 +28,11 @@ class Users {
     }
 
     // ---- GETTER -----//
+
+    public function getCodigo(){
+        return $this->codigo;
+    }
+
     public function getNome() {
         return $this->nome;
     }
@@ -73,6 +81,10 @@ class Users {
 
     public function setEmail($email): void {
         $this->email = $email;
+    }
+
+    public function setCodigo($codigo): void {
+        $this->codigo = $codigo;
     }
 
     

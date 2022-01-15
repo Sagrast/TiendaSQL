@@ -12,11 +12,11 @@ include_once "./class/Users.class.php";
 session_start();
 
 //Array que contiene el CSV
-$database = DAO::leerUsuarios("usuarios.csv");
+$database = DAO::userBDD();
 
 if (!isset($_SESSION['userSesion'])) {
     die(header("location: login.php"));
-} else if (!DAO::esAdmin($_SESSION['userSesion'], $database)) {
+} else if (!DAO::esAdminBDD($_SESSION['userSesion'])) {
     //Si la función esAdmin() devuelve falso, el usuario no podrá entrar en la página.
     die("Non es administrador. <a href='login.php'>identificarse</a>.<br/>");
 } else {
@@ -36,7 +36,7 @@ $correoError = "";
 $errores = array();
 
 if (isset($_POST['engadir'])) {
-    if (DAO::esAdmin($_SESSION['userSesion'], $database)) {
+    if (DAO::esAdminBDD($_SESSION['userSesion'])) {
         //Rol
         if (isset($_POST['rol'])) {
             if (!empty($_POST['rol'])) {
@@ -92,11 +92,11 @@ if (isset($_POST['engadir'])) {
 
         //Si el array tiene todos los campos cubiertos correctamente, lo escribimos en el CSV.
         if (empty($errores)) {
-            form($rol, $login, $contrasinal, $nomeCompleto, $enderezo, $email, $database);
+            form($rol, $login, $contrasinal, $nomeCompleto, $enderezo, $email);
             header("Refresh:0");
         }
     } else {
-        erro($adminError);
+        DAO::erro($adminError);
     }
 }
 ?>
@@ -195,10 +195,10 @@ if (isset($_POST['engadir'])) {
                 <td><?php echo $datos->getContrasinal() ?></td>
                 <td><?php echo $datos->getNome() ?></td>
                 <td><?php echo $datos->getEnderezo() ?></td>
-                <td><?php echo $datos->getEmail() ?></td>
-                <td><a href="borrarUsuario.php?id=<?php echo $contFila++; ?>">Eliminar</a></td>
+                <td><?php echo $datos->getEmail() ?></td>                                
+                <td><a href="borrarUsuario.php?id=<?php echo $datos->getCodigo(); ?>">Eliminar</a></td>
             </tr>
-            <?php
+            <?php            
         }
         ?>    
     </table>

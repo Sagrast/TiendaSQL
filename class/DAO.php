@@ -9,6 +9,245 @@ class DAO {
 //Version: 1.0
 //Fecha: 30/10/2021
 //Proyecto Tienda: DAO
+
+/*
+
+----------------------------------------------------------------------------------------------
+                            METODOS PARA BDDD
+----------------------------------------------------------------------------------------------
+
+*/
+/* 
+
+------------------------------------ LEER Productos BDD -------------------------------------------
+
+
+*/
+//Metodo para realizar una consulta a la BDD mediante PDO
+
+
+public static function productsBDD(){
+    //Creamos un  objeto de la clase connect.  
+    $conexion = new Connect();  
+    //Creamos una variable que llama al metodo conexion() de la clase Connect.
+    $con = $conexion->conexion();
+    //Creamos una consulta preparada.    
+    $select = $con->prepare('SELECT * FROM productos');
+    //Y la ejecutamos.
+    $select->execute();    
+    //Creamos un array que contendrá el resultado de la consulta SQL
+    $data = array();
+    //Y creamos un array el que guardaremos los objetos instanciados.
+    $resultado = array();
+    //Si la consulta no es correcta
+    if (!$select){
+        //Generamos un error.
+        $DATA['Error']= "Error de Consulta de Conexión";
+    } else {
+        //Si es correcta recorremos cada fila de la consulta usando la propiedad de PDO de array asociativo, creando así un array
+        //Cuyo indice será el nombre de la columna y valor el contenido de la fila correspondiente a la columna.
+        while ($row = $select->fetch(PDO::FETCH_ASSOC)){                                    
+            $data[] = $row;            
+            
+        }
+        
+    }
+    //Usando el array asociativo anterior instanciamos objetos de la clase Productos para poder así user los metodos propios de esta clase.
+    foreach($data as $d){        
+        $producto = new Produtos($d['nome'],$d['descricion'],$d['unidades'],$d['prezo'],$d['fotos'],$d['ive']);
+        $producto->setCodigo($d['codigoProd']);
+        $resultado[] = $producto;
+    }
+    return $resultado;
+
+    
+}
+
+/*
+  --------------------- LEER BDD USUARIOS --------------------------------------------
+ */
+/* 
+    En  este metodo repetimos los mismos pasos que con la clase producto adaptandolos a la clase Usuarios.
+*/
+
+public static function userBDD() {
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    $select = $con->prepare('SELECT * FROM usuarios');
+    $select->execute();
+    $data = array();
+    $resultado = array();
+    if (!$select){
+        $DATA['Error'] = "Error de Consulta de Conexión";
+    } else {
+        while ($row = $select->fetch(PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
+    }
+    foreach($data as $d){
+        $usuario = new Users($d['rol'],$d['userLogin'],$d['contrasinal'],$d['nome'],$d['enderezo'],$d['email']);
+        $usuario->setCodigo($d['codigoUser']);
+        $resultado[] = $usuario;
+    }
+   
+    return $resultado;
+
+}
+/*
+  -------------------------------------- VALIDAR USUARIO ----------------------------------------
+ */
+
+public static function validateUserBDD($login) { 
+    //Abrimos conexion
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    //Se prepara la consulta
+    $query = $con->prepare('SELECT userLogin FROM usuarios WHERE userLogin = :userLogin');
+    //Enlazmos parametros
+    $query->bindParam(":userLogin",$login);
+    //Se ejecuta la consulta e inicializamos dos variables. El array que contendrá la respuesta de la consulta y un booleano que será el retorno de la función.
+    $query->execute();    
+    //Si el numero de filas devuelto es igual a 0, el usuario no existe. 
+    if ($query->rowCount() == 0) {
+        $existe = false;
+    } else {
+        $existe = true;
+    }
+    
+    return $existe;
+
+}
+
+
+/*
+  -------------------------------------- BORRAR USUARIO ----------------------------------------
+ */
+
+//Recibe una ID y ejecuta una consulta SQL.
+public static function deleteBDD($id) {
+    //Al igual que en metodos anteriores, repetimos los pasospara preparar la conexión a la BDD 
+    //a través de su clase.
+    $ok = true;
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    //Se abre una transaccion.
+    $con->beginTransaction();    
+    //Preparamos la consulta que vamos a lanzar
+    $delete = $con->prepare('DELETE FROM usuarios WHERE codigoUser = (:codigo)');
+    //Asociamos el parametro :codigo, con la $id que recibe la función.
+    $delete->bindParam(":codigo",$id);
+    //Se ejecuta la consulta y si el resultado es igual a 0 cambiamos la variable OK a falsa.
+    if ($delete->execute() == 0) {
+        $ok = false;
+    }
+    
+    //Si todo ha ido bien $ok sigue en True, se confirma la transacción. De lo contrario revertimos los cambios.
+    if ($ok){        
+        $con->commit();
+    } else {
+        $con->rollBack();
+    }
+    //$delete->execute();    
+}
+/*
+  -------------------------------------- Escribir BDD ----------------------------------------
+ */
+
+public static function escribirUsuariosBDD($datos) {
+    $ok = true;
+    //Preparación de conexión, inicio de transacción y consulta.
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    $con->beginTransaction();
+    $insert = $con->prepare('INSERT INTO usuarios VALUES (NULL,:rol,:userLogin,:contrasinal,:nome,:enderezo,:email)');
+    //Recoger en variables los paraemetros del objeto recibido.
+    $rol = $datos->getRol();
+    $login = $datos->getLogin();
+    $pass = $datos->getContrasinal();
+    $nome = $datos->getNome();
+    $enderezo = $datos->getEnderezo();
+    $mail = $datos->getEmail();
+    //Enlazar los parametros con la consulta preparada.
+    $insert->bindParam(':rol',$rol);
+    $insert->bindParam(':userLogin',$login);
+    $insert->bindParam(':contrasinal',$pass);
+    $insert->bindParam(':nome',$nome);
+    $insert->bindParam(':enderezo',$enderezo);
+    $insert->bindParam(':email', $mail);
+     if ($insert->execute() == 0) {
+         $ok = false;
+     }
+
+     if ($ok) {
+         $con->commit();
+     } else {
+         $con->rollBack();
+     }
+   
+    return true;
+}
+
+/*
+  -------------------------------------- COMPARAR HASH BDD------------------------------------------
+ */ 
+
+public static function comparaHashBDD($user, $pass) {
+    //Como siempre, abrimos conexión a MySQL
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    //Preparamos la consulta
+    $query = $con->prepare("SELECT contrasinal FROM usuarios WHERE userLogin = :userLogin");
+    //Vinculamos el parametro recibido a la consulta. Y ejecutamos.
+    $query->bindParam(":userLogin",$user);
+    $query->execute();
+    //Almacenamos el array que devuelve.
+    $cont = $query->fetch(PDO::FETCH_ASSOC);
+    //Y nos quedamos con el valor que necesitamos en una variable, pues Crypt da error si recibe un array en vez de el String.
+    $contrasinal = $cont['contrasinal'];
+    //Inicializamos un booleano que será la respuesta de la función.    
+    $existe = false;   
+    //Pasamos los datos por la función Hash Equals con un Crypt y nos devolverá verdadero si ambos hash son correctos.
+            if (hash_equals($contrasinal, crypt($pass,$contrasinal))) {
+                $existe = true;
+            }    
+    return $existe;
+    
+}
+
+/*
+  -------------------------------------- COMPROBAR ROL DE USUARIO CON BDD ------------------------------------------
+ */
+
+public static function esAdminBDD($usuario) {
+    //Iniciamos una variable a falso.    
+    $admin = false;
+    //Preparamos la conexión, Query y asociamos parametros.
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    $query = $con->prepare("SELECT rol FROM usuarios WHERE userLogin = :userLogin");
+    $query->bindParam(":userLogin",$usuario);
+    $query->execute();
+    //almacenamos el resultado en un array.
+    $rol = $query->fetch(PDO::FETCH_ASSOC);
+    //Hacemos una comparación del valor del array con la cadena 'Administrador', si es correcto devolvemos verdadero.
+        if (strcasecmp($rol['rol'],'Administrador') == 0){
+            $admin = true;
+        }
+    
+    return $admin;
+}
+
+
+
+
+/*
+
+----------------------------------------------------------------------------------------------
+                            METODOS PARA CSV
+----------------------------------------------------------------------------------------------
+
+*/
+
 /*
   -------------------------------------- LEER CSV ----------------------------------------
 
@@ -31,37 +270,6 @@ function leerProdutos($ruta) {
     return $arrayDatos;
 }
 
-/* 
-
------------------------------------- LEER BDD -------------------------------------------
-
-
-*/
-
-public static function leerProdutosBDD(){  
-    $conexion = new Connect();  
-    $con = $conexion->conexion();    
-    $select = $con->prepare('SELECT * FROM productos');
-    $select->execute();    
-    $data = array();
-    $resultado = array();
-    if (!$select){
-        $DATA['Error']= "Error de Consulta de Conexión";
-    } else {
-        while ($row = $select->fetch(PDO::FETCH_ASSOC)){                                    
-            $data[] = $row;            
-            
-        }
-        
-    }
-    foreach($data as $d){
-        $producto = new Produtos($d['codigoProd'],$d['nome'],$d['descricion'],$d['unidades'],$d['prezo'],$d['fotos'],$d['ive']);
-        $resultado[] = $producto;
-    }
-    return $resultado;
-
-    
-}
 
 /*
   --------------------- LEER USUARIOS --------------------------------------------
@@ -82,15 +290,7 @@ function leerUsuarios($ruta) {
     fclose($fp);
     return $arrayDatos;
 }
-/*
-  --------------------- LEER BDD USUARIOS --------------------------------------------
- */
 
- public static function userBDD() {
-     $conexion = new Connect();
-
-
- }
 
 /*
   -------------------------------------- ENCRIPTAR CONTRASEÑA ----------------------------------------
@@ -385,4 +585,3 @@ function borrarCesta($id, $array) {
     
     
 }
-?>

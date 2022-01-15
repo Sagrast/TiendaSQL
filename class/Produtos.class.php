@@ -14,10 +14,10 @@ class Produtos {
     private $prezo;
     private $fotos;
     private $ive;
-
+//Dado que el código de usuario ahora se genera de forma Auto Incremental cuando se inserta un articulo en la bdd
+    //Se retira la exigencia de este en el constructor y se le da valor a través del Setter cuando sea necesario.
 //CONSTRUCTOR    
-    public function __construct($codigo, $nome, $descricion, $unidades, $prezo,$fotos,$ive) {
-        $this->codigo = $codigo;
+    public function __construct($nome, $descricion, $unidades, $prezo,$fotos,$ive) {        
         $this->nome = $nome;
         $this->descricion = $descricion;
         $this->unidades = $unidades;

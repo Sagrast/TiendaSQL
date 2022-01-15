@@ -21,7 +21,8 @@
 <body>
     <?php 
         
-        $csv = DAO::leerUsuarios("usuarios.csv");
+        //Con los nuevos metodos de validación de usuario no necesito cargar en memoria toda la base de datos.
+        //$csv = DAO::userBDD();
         $error = "";
         if (isset($_POST['login'])){
             $usuario = $_POST['user'];
@@ -32,10 +33,10 @@
                 //Si hay campos vacíos generamos un error.
                 $error = "Debe inserir usuario e contrasinal";
             } else {
-                //si el usuario existe en el CSV
-                if (DAO::validarUsuario($usuario,$csv)){
+                //si el usuario existe en la BDD
+                if (DAO::validateUserBDD($usuario)){
                     //compara el Hash de la contraseña insertada y la almacenada.
-                    if(DAO::comparaHash($usuario,$pass,$csv)){                        
+                    if(DAO::comparaHashBDD($usuario,$pass)){                        
                         //si todos los campos son correctos, nos dirige a la pagina de usuarios.
                         session_start();
                         $_SESSION['userSesion'] = $usuario;

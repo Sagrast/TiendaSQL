@@ -13,7 +13,7 @@ include_once "./class/Users.class.php";
 //Creamos una función formulario para unificar rexistro.php y usuarios.php
 //Recibe los parametros de creación de formulario.
 //El campo Database corresponde con el archivo CSV almacenado en un array.
-function form($rol, $login, $contrasinal, $nomeCompleto, $direccion, $email, $database) {
+function form($rol, $login, $contrasinal, $nomeCompleto, $direccion, $email) {
     $rolOK = $loginOK = $contrasinalOK = $nomeCompletoOK = $direccionOK = $emailOK = "";
     $loginError = $contrasinalError = $nomeCompletoError = $enderezoError = $emailError = "";
     $erros = array();
@@ -30,7 +30,7 @@ function form($rol, $login, $contrasinal, $nomeCompleto, $direccion, $email, $da
     if (DAO::validarTexto($login) == 1) {
         //Si el texto es correcto y el usuario no existe en la base de datos
         //damos por valido el campo.
-        if (!DAO::validarUsuario($login, $database)) {
+        if (!DAO::validateUserBDD($login)) {
             $loginOK = $login;
         } else {
             //En caso contrario, generamos un error y lo añadimos al array.
@@ -94,10 +94,9 @@ function form($rol, $login, $contrasinal, $nomeCompleto, $direccion, $email, $da
     if (empty($erros)) {
         //Genereamos un nuevo objeto Usuario que recibe los valores validados previamente.
         $newUser = new Users($rolOK, $loginOK, $contrasinalOK, $nomeCompletoOK, $direccionOK, $emailOK);        
-        //lo añadimos al array de base de datos.
-        $database[] = $newUser;
+        //lo añadimos al array de base de datos.        
         //Escribimos el array en el el archivo correspondiente.
-        DAO::escribirUsuarios("usuarios.csv", $database);
+        DAO::escribirUsuariosBDD($newUser);
         header("location: perfil.php");
     } else {
         //Si el array contiene errores, los mostramos por pantalla.
