@@ -13,6 +13,8 @@ session_start();
     <head>
         <meta charset="UTF-8">
         <title>Benvidos a CPC Store</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <?php
         //Configuración del estilo de la página
         if (isset($_COOKIE['estilo'])) {
@@ -64,39 +66,44 @@ session_start();
 
         //Mostramos la tabla de contenidos de la tienda.
         ?>
-        <table class="lista">
-
+        <table class="table table-striped table-dark">
+            <thead class="thead-dark">
             <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Unidades</th>
-                <th>Prezo</th>
-                <th>IVE</th>
-                <th>Prezo con Ive</th>
-                <th>Mercar</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Unidades</th>
+                <th scope="col">Prezo</th>
+                <th scope="col">IVE</th>
+                <th scope="col">Prezo con Ive</th>
+                <th scope="col">Mercar</th>
             </tr>
+            </thead>
+            <tbody>
 <?php
 foreach ($stock as $productos) {
     ?>
                 <tr>
-                <form method ="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                
+                
                     <td><img class="imgStore" src="<?php echo $productos->getFotos(); ?>"/></td>
-                    <td><input type="text" value="<?php echo $productos->getNome(); ?>"disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->getDescricion(); ?>" disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->getUnidades(); ?>" disabled /></td>
-                    <td><input type="text" value="<?php echo $productos->getPrezo(); ?>" disabled/></td>
-                    <td><input type="text" value="<?php echo $productos->getIve(); ?>" disabled/></td>                    
-                    <td><input type="text" value="<?php echo $productos->prezoConIVE(); ?>" disabled/></td> 
+                    <td><?php echo $productos->getNome(); ?></td>
+                    <td><?php echo $productos->getDescricion(); ?></td>
+                    <td><?php echo $productos->getUnidades(); ?></td>
+                    <td><?php echo $productos->getPrezo(); ?></td>
+                    <td><?php echo $productos->getIve(); ?> </td>                    
+                    <td><?php echo $productos->prezoConIVE(); ?> </td> 
+                    <form method ="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                     <input type="hidden" value="<?php echo $productos->getCodigo(); ?>" name="codigo"/>
     <?php
     if (isset($_SESSION['userSesion'])) {
-        echo '<td><input type="submit" name="engadir" value="engadir"></td>';
+        echo '<td><button type="submit" name="engadir">Engadir</td>';
     } else {
         echo '<td><a href="rexistro.php">Mercar</a></td>';
     }
     ?>
                     </tr>
+            </tbody>
                 </form>     
     <?php
 }

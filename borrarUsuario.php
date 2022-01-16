@@ -20,8 +20,9 @@ if (!isset($_SESSION['userSesion'])) {
     </head>
     <body>
         <?php
-        //Carga del CSV en un array
-        $usuarios = DAO::userBDD();
+        
+        //Con el traslado a BDD ya no necesitamos cargar en memoria todos los datos.
+        //$usuarios = DAO::userBDD();
         //Variable que contendrá la ID a buscar.
         $id = "";
         $adminError = "No eres Administrador";
@@ -32,9 +33,8 @@ if (!isset($_SESSION['userSesion'])) {
         }
 
         //Comprobamos que el usuario sea administrador para poder borrar.
-        if (DAO::esAdmin($_SESSION['userSesion'], $usuarios)) {           
-            $borrado = DAO::deleteBDD($id);
-            
+        if (DAO::esAdminBDD($_SESSION['userSesion'])) {           
+            DAO::deleteBDD($id);            
             header("Location: usuarios.php");
         } else {
             die("Non tes permisos de Administrador. Debe <a href='login.php'>identificarse</a>.<br/>");

@@ -150,7 +150,7 @@ public static function deleteBDD($id) {
     //$delete->execute();    
 }
 /*
-  -------------------------------------- Escribir BDD ----------------------------------------
+  -------------------------------------- Escribir USUARIOS BDD ----------------------------------------
  */
 
 public static function escribirUsuariosBDD($datos) {
@@ -184,8 +184,47 @@ public static function escribirUsuariosBDD($datos) {
          $con->rollBack();
      }
    
-    return true;
+    return $ok;
 }
+
+/*
+ * ----------------------------------------- Escribir Cesta --------------------------------- 
+ */
+
+function escribirProductosBDD($productos){
+    $ok = true;
+    $status = "";
+    //Preparación de la conexión, inicio de transacción y consulta.
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    $con->beginTransaction();
+    $insert = $con->prepare("INSERT INTO productos VALUES (NULL,:nome,:descricion,:unidades,:prezo,:foto,:ive)");
+    $nome = $productos->getNome();
+    $desc = $productos->getDescricion();
+    $unidades = $productos->getUnidades();
+    $prezo = $productos->getPrezo();
+    $foto = $productos->getFotos();
+    $ive = $productos->getIve();
+    $insert->bindParam(':nome',$nome);
+    $insert->bindParam(':descricion',$desc);
+    $insert->bindParam(':unidades',$unidades);
+    $insert->bindParam(':prezo',$prezo);
+    $insert->bindParam(':foto',$foto);
+    $insert->bindParam(':ive', $ive);
+
+    if ($insert->execute() == 0){
+        $ok = false;
+    }
+
+    if ($ok) {
+        $con->commit();        
+    } else {
+        $con->rollBack();        
+    }
+    
+    return $ok;
+}
+
 
 /*
   -------------------------------------- COMPARAR HASH BDD------------------------------------------
@@ -236,6 +275,31 @@ public static function esAdminBDD($usuario) {
     
     return $admin;
 }
+
+/*
+  ----------------------------------------- Buscar Producto ---------------------------------
+
+ */
+
+public static function buscarProductoBDD($codigo) {    
+    //Iniciamos variable que responderá si existe un producto o no.
+    $existe = true;
+    //Preparamos conexión a la BDD
+    $conexion = new Connect();
+    $con = $conexion->conexion();
+    //preparamos consulta
+    $query = $con->prepare("SELECT nome from productos WHERE codigoProd = :codigoProd");
+    $query->bindParam(":codigoProd",$codigo);
+    //Ejecutamos consulta.
+    $query->execute();
+    //Contamos las filas devueltas por la consulta. Si es igual a 0, el producto no existe.
+    if ($query->rowCount() == 0) {
+        $existe = false;
+    }    
+    
+    return $existe;
+}
+
 
 
 

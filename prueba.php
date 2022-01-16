@@ -5,6 +5,6 @@
 
     $nombre = 'Oscar';
 
-    var_dump(DAO::esAdminBDD('oscar'));
+    var_dump(DAO::buscarProductoBDD('1'));
 
 ?>

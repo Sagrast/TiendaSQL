@@ -96,8 +96,12 @@ function form($rol, $login, $contrasinal, $nomeCompleto, $direccion, $email) {
         $newUser = new Users($rolOK, $loginOK, $contrasinalOK, $nomeCompletoOK, $direccionOK, $emailOK);        
         //lo añadimos al array de base de datos.        
         //Escribimos el array en el el archivo correspondiente.
-        DAO::escribirUsuariosBDD($newUser);
-        header("location: perfil.php");
+        if (DAO::escribirUsuariosBDD($newUser)) {
+            header("location: perfil.php");
+        } else {
+            $invalidUser = "El Usuario ya existe.";            
+        }
+        
     } else {
         //Si el array contiene errores, los mostramos por pantalla.
         foreach ($erros as $errores){
