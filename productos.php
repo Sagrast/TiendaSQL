@@ -144,8 +144,8 @@ include_once './class/Produtos.class.php';
         }
 
         if (empty($formError)) {
-            $newProduct = new Produtos($nome, $descricion, $unidades, $prezo, $fotos, $ive);            
-            if (DAO::escribirProductosBDD($newProduct)){
+            $newProduct = new Produtos($nome, $descricion, $unidades, $prezo, $fotos, $ive);
+            if (DAO::escribirProductosBDD($newProduct)) {
                 echo "Inserción correcta";
             } else {
                 echo "Fallo en la insercion";
@@ -164,59 +164,73 @@ include_once './class/Produtos.class.php';
         
         -->
     <h1> Engadir Productos </h1>
-    <form method="post" action="<?php $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
-
-        <label for="nome">Nome</label><br />
-        <input type="text" name="nome" value="<?php
-                                                if (isset($_POST['nome'])) {
-                                                    echo $_POST['nome'];
-                                                }
-                                                ?>"></input>
-        <?php DAO::erro($nomeErro) ?>
-        <label for="descricion">Descricion</label><br />
-        <input type="text" name="descricion" value="<?php
-                                                    if (isset($_POST['descricion'])) {
-                                                        echo $_POST['descricion'];
-                                                    }
-                                                    ?>" />
-        <?php DAO::erro($descricionErro) ?>
-       
-        <label for="unidades">Unidades</label><br />
-        <input type="number" value="<?php
-                                    if (isset($_POST['unidades'])) {
-                                        echo $_POST['unidades'];
-                                    }
-                                    ?>" name="unidades" />
-        <?php DAO::erro($unidadesErro) ?>
-        <label for="prezo">Prezo</label>
-        <input type="number" name="prezo" value="<?php
-                                                    if (isset($_POST['prezo'])) {
-                                                        echo $_POST['prezo'];
-                                                    }
-                                                    ?>" />
-        <?php DAO::erro($prezoErro) ?>
-        <label for="ive">IVE</label>
-        <input type="number" name="ive" value="<?php
-                                                if (isset($_POST['ive'])) {
-                                                    echo $_POST['ive'];
+    <div class="container">
+        <div class="form-row">
+            <form method="post" action="<?php $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="nome">Nome</label><br />
+                    <input type="text" name="nome" class="form-control" value="<?php
+                                                                                if (isset($_POST['nome'])) {
+                                                                                    echo $_POST['nome'];
+                                                                                }
+                                                                                ?>"></input>
+                    <?php DAO::erro($nomeErro) ?>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="descricion">Descricion</label><br />
+                    <input type="text" name="descricion" class="form-control" value="<?php
+                                                                                        if (isset($_POST['descricion'])) {
+                                                                                            echo $_POST['descricion'];
+                                                                                        }
+                                                                                        ?>" />
+                    <?php DAO::erro($descricionErro) ?>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label" for="unidades">Unidades</label><br />
+                    <input type="number" lass="form-control" value="<?php
+                                                                    if (isset($_POST['unidades'])) {
+                                                                        echo $_POST['unidades'];
+                                                                    }
+                                                                    ?>" name="unidades" />
+                    <?php DAO::erro($unidadesErro) ?>
+                </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="prezo">Prezo</label>
+                <input type="number" lass="form-control" name="prezo" value="<?php
+                                                                                if (isset($_POST['prezo'])) {
+                                                                                    echo $_POST['prezo'];
+                                                                                }
+                                                                                ?>" />
+                <?php DAO::erro($prezoErro) ?>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="ive">IVE</label>
+                <input type="number" lass="form-control" name="ive" value="<?php
+                                                                            if (isset($_POST['ive'])) {
+                                                                                echo $_POST['ive'];
+                                                                            }
+                                                                            ?>" />
+                <?php DAO::erro($iveErro) ?>
+            </div>
+        </div>
+        <div class="form-row">
+        <label class="form-label" for="fotos">Imagen</label>
+        <input type="file" name="fotos" value="<?php
+                                                if (isset($_POST['fotos'])) {
+                                                    echo $_POST['fotos'];
                                                 }
                                                 ?>" />
-        <?php DAO::erro($iveErro) ?>
 
+        </div>
+        <div class="form-row">
+        <button type="submit" class="btn btn-primary" name="engadir">Engadir</button>
+        <button type="reset" class="btn btn-primary" name="borrar">Borrar</button>
+        </div>
+        </form>
 
-        <td colspan="6">
-            <label for="fotos">Imagen</label>
-            <input type="file" name="fotos" value="<?php
-                                                    if (isset($_POST['fotos'])) {
-                                                        echo $_POST['fotos'];
-                                                    }
-                                                    ?>" />
-
-
-            <button type="submit" name="engadir">Engadir</button>
-            <button type="reset" name="borrar">Borrar</button>
-
-    </form>
+    </div>
 
     <!-- 
         

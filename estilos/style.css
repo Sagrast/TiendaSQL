@@ -87,7 +87,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-input[type="number"], select {
+/* input[type="number"], select {
     width: 100%;
     margin-bottom: 20px;
     padding: 7px;
@@ -101,7 +101,7 @@ input[type="submit"],input[type="reset"]{
     padding: 5px;
     text-transform: capitalize;
 }
-
+ */
 #rol {  
   background-color: #0563af;
   color: white;
