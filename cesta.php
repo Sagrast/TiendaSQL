@@ -41,13 +41,11 @@ if (isset($_SESSION['userSesion'])) {
             //almacenamos en un array los indices del producto.
             $cestaKeys = array_keys($cesta->getProducto());
             //Almacenamos el usuario de la sesion en una variable.
-            $username = $_SESSION['userSesion'];
-            var_dump($username);
+            $username = $_SESSION['userSesion'];            
             //inicializamos una variable importe acumular la suma del precio de los productos.
             $importe = 0;
             //Iniciamos un bucle ForEach que recorre los objetos de productos. Y creamos la tabla ce la cesta.
-            $compra = array();
-            var_dump($cestaKeys);
+            $compra = array();            
             
             /*
               --------------------------------------------- CODIGO FORMULARIO ----------------------------------------------
@@ -86,7 +84,7 @@ if (isset($_SESSION['userSesion'])) {
                             $importe += $precio;
                             if (isset($_POST['eliminar'])){
                                $cesta->eliminarArtigo($stock->getCodigo());
-                               echo "<meta http-equiv='refresh' content='0'>";
+                               //echo "<meta http-equiv='refresh' content='0'>";
                             }                            
                         }
                     }                    
