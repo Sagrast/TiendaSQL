@@ -8,7 +8,7 @@
     include "./class/DAO.php";
     include "./functions/form.php";
     include_once "./class/Users.class.php";
-    $database = DAO::leerUsuarios("usuarios.csv");
+    //$database = DAO::leerUsuarios("usuarios.csv");
 ?>
 <!DOCTYPE html>
 <html>

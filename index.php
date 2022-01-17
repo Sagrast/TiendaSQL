@@ -51,7 +51,7 @@ session_start();
         $codigo = "";
         if (isset($_POST['engadir'])) {
             $codigo = $_POST['codigo'];
-            if (DAO::buscarProducto($codigo) == false) {
+            if (DAO::buscarProductoBDD($codigo) == true) {
                 $cesta->engadirArtigo($codigo);
             }
             $_SESSION['cesta'] = $cesta;

@@ -36,16 +36,18 @@ if (isset($_SESSION['userSesion'])) {
             //Si hay una session Cesta.
             $cesta = $_SESSION['cesta'];
             //Leemos CSV de productos
-            $productos = DAO::leerProdutos("productos.csv");
-            $usuarios = DAO::leerUsuarios("usuarios.csv");
+            $productos = DAO::productsBDD();
+            $usuarios = DAO::userBDD();
             //almacenamos en un array los indices del producto.
             $cestaKeys = array_keys($cesta->getProducto());
             //Almacenamos el usuario de la sesion en una variable.
             $username = $_SESSION['userSesion'];
+            var_dump($username);
             //inicializamos una variable importe acumular la suma del precio de los productos.
             $importe = 0;
             //Iniciamos un bucle ForEach que recorre los objetos de productos. Y creamos la tabla ce la cesta.
             $compra = array();
+            var_dump($cestaKeys);
             
             /*
               --------------------------------------------- CODIGO FORMULARIO ----------------------------------------------
@@ -84,7 +86,7 @@ if (isset($_SESSION['userSesion'])) {
                             $importe += $precio;
                             if (isset($_POST['eliminar'])){
                                $cesta->eliminarArtigo($stock->getCodigo());
-                               header("Refresh:0");
+                               echo "<meta http-equiv='refresh' content='0'>";
                             }                            
                         }
                     }                    
@@ -101,6 +103,7 @@ if (isset($_SESSION['userSesion'])) {
             </tr>
     <?php
     //Iniciamos un bucle recorriendo el array de usuarios.
+    $codigo = "";
     foreach ($usuarios as $users) {
         //Si el login del usuario coincide con el que ha iniciado sesion
         //Mostramos sus datos por pantalla.
@@ -113,14 +116,15 @@ if (isset($_SESSION['userSesion'])) {
             //Mostramos el valor acumulado en importe, como precio final.
             echo "<td>" . $importe . " </td>";
             echo "</tr>";
+            $codigo = $users->getCodigo();
         }
     }
     
     if (isset($_POST['pagar'])){
-        DAO::escribirCesta($_SESSION['cesta'],$_SESSION['userSesion']);
+        DAO::escribirCestaBDD($cestaKeys,$codigo,$importe);
         echo "<h3>Compra Realizada con éxito</h3>";
     } else if(isset($_POST['seguir'])){
-        header("location: index.php");
+        header("Location: index.php");
     }
     
     if (!empty($cesta)){

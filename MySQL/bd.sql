@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     codigoPedidos SERIAL,
     fecha DATETIME,
     precio_total DECIMAL(8,2),
-    codigoUser BIGINT UNSIGNED NOT NULL UNIQUE,
+    codigoUser BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(codigoPedidos),
     CONSTRAINT FK_USER_PROD
         FOREIGN KEY (codigoUser)
