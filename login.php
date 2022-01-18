@@ -12,13 +12,7 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <?php 
-          if (isset($_COOKIE['estilo'])) {
-            echo '<link rel="styleSheet" href="'.$_COOKIE['estilo'].'"/>';            
-        } else {
-            echo '<link rel="stylesheet" href="./estilos/style.css"/>';
-        }        
-     ?>
+    
 </head>
 <body>
     <?php 
@@ -56,8 +50,10 @@
         
     ?>
    
-    <div class="box">        
-        <h1>Tenda Online</h1>
+    < class="box"> 
+    <div class="container">
+        <h1 class="neon">Tenda Online</h1>
+        </div>       
         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
             <label for="user">Usuario</label>
             <br/>
