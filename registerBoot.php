@@ -95,10 +95,9 @@ include "./recursos/head.php";
     
     ?>
 
-
 <body>
     <section class="vh-100 gradient-custom">
-        <div class="container register-form">
+        <div class="container register-form py-5 h-100"">
             <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                 <div class="form">
                     <div class="note">
@@ -135,13 +134,15 @@ include "./recursos/head.php";
                                     <input type="email" class="form-control" name="email" placeholder="Correo Electronico" value="" />
                                     <?php DAO::erro($emailError) ?>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="address" placeholder="Direccion" value="" />
                                     <?php DAO::erro($enderezoError) ?>
                                 </div>
                             </div>
-                        </div>
-                        <button type="button" name="gardar" class="btnSubmit">Enviar</button>
+                        </div>                                                
+                        <button type="button" name="gardar" class="btnSubmit">Enviar</button>                        
                     </div>
                 </div>
         </div>
