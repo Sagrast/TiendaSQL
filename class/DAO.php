@@ -59,6 +59,46 @@ class DAO
     }
 
     /*
+  ----------------------------------------- Actualizar Usuarios ---------------------------------
+ */
+    public static function updateProdBDD($productos, $id)
+    {
+        $ok = true;
+        $conexion = new Connect();
+        $con = $conexion->conexion();
+        $con->beginTransaction();
+        //Preparacion da consulta;
+        $update = $con->prepare("UPDATE productos SET nome = :nome, descricion = :descricion, unidades = :unidades, prezo = :prezo,fotos = :fotos, ive = :ive WHERE codigoProd = :codigo");
+        //Enlazar parametros.        
+        $nome = $productos->getNome();
+        $desc = $productos->getDescricion();
+        $unidades = $productos->getUnidades();
+        $prezo = $productos->getPrezo();
+        $foto = $productos->getFotos();
+        $ive = $productos->getIve();
+        
+        $update->bindParam(':nome', $nome);
+        $update->bindParam(':descricion', $desc);
+        $update->bindParam(':unidades', $unidades);
+        $update->bindParam(':prezo', $prezo);
+        $update->bindParam(':fotos', $foto);
+        $update->bindParam(':ive', $ive);
+        $update->bindParam(':codigo',$id);
+
+        //Si la ejecución es incorrecta $ok pasa a falso.
+        if ($update->execute() == 0) {
+            $ok = false;
+        }
+
+        //Si $ok es falso, hacemos un rollback. De lo contrario confirmamos cmabios
+        if ($ok) {
+            $con->commit();
+        } else {
+            $con->rollBack();
+        }
+    }
+
+    /*
   --------------------- LEER BDD USUARIOS --------------------------------------------
  */
     /* 
@@ -271,10 +311,11 @@ class DAO
         }
     }
 
- /*
+    /*
   ----------------------------------------- Actualizar Usuarios ---------------------------------
- */    
-    public static function updateUserBDD($datos,$id){
+ */
+    public static function updateUserBDD($datos, $id)
+    {
         $ok = true;
         $conexion = new Connect();
         $con = $conexion->conexion();
@@ -286,17 +327,20 @@ class DAO
         $pass = $datos->getContrasinal();
         $nome = $datos->getNome();
         $enderezo = $datos->getEnderezo();
-        $mail = $datos->getEmail();        
+        $mail = $datos->getEmail();
         $update->bindParam(':userLogin', $login);
         $update->bindParam(':contrasinal', $pass);
         $update->bindParam(':nome', $nome);
         $update->bindParam(':enderezo', $enderezo);
         $update->bindParam(':email', $mail);
-        $update->bindParam(':codigo',$id);
+        $update->bindParam(':codigo', $id);
+
+        //Si la ejecución es incorrecta $ok pasa a falso.
         if ($update->execute() == 0) {
             $ok = false;
         }
 
+        //Si $ok es falso, hacemos un rollback. De lo contrario confirmamos cmabios
         if ($ok) {
             $con->commit();
         } else {
@@ -380,6 +424,10 @@ class DAO
         return $existe;
     }
 
+    /* 
+    ----------------------------------------- Buscar un Usuario---------------------------------
+    */
+    //Busca un usuario e devolve un Obxto co usuario buscado.
     public static function buscarUserBDD($codigo)
     {
         $conexion = new Connect();
@@ -395,11 +443,33 @@ class DAO
         //Devolvemos o obxeto usuarios.   
         $user->setCodigo($resultado['codigoUser']);
 
-        var_dump($user);
         return $user;
     }
+    /* 
+------------------------------------ LEER Productos BDD -------------------------------------------
+*/
+    //Metodo para realizar una consulta a la BDD mediante PDO
 
-   
+
+    public static function findProductsBDD($id)
+    {
+
+        //Preparamos conexión a la BDD
+        $conexion = new Connect();
+        $con = $conexion->conexion();
+        //preparamos consulta
+        $query = $con->prepare("SELECT * from productos WHERE codigoProd = :codigoProd");
+        $query->bindParam(":codigoProd", $id);
+        //Ejecutamos consulta.
+        $query->execute();
+        $prod = $query->fetch(PDO::FETCH_ASSOC);
+        $resultado = new Produtos($prod['nome'], $prod['descricion'], $prod['unidades'], $prod['prezo'], $prod['fotos'], $prod['ive']);
+        $resultado->setCodigo($prod['codigoProd']);
+
+        return $resultado;
+    }
+
+
 
 
     /*

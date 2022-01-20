@@ -168,7 +168,7 @@ include_once "./recursos/head.php";
                                                                                 ?>" />
                         <?php DAO::erro($correoError) ?>
                         <br />
-                        <input type="submit" value="engadir" name="engadir" />
+                        <input type="submit" value="engadir" name="engadir" class="btnSubmit"/>
                     </form>
                 </div>
             </div>
