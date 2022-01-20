@@ -70,6 +70,7 @@ if (isset($_POST['gardar'])) {
         array_push($erros, $validarError);
     }
 
+<<<<<<< HEAD
     //Nome completo.
     if (isset($_POST['fullName'])) {
         $nomeCompleto = $_POST['fullName'];
@@ -94,6 +95,8 @@ if (isset($_POST['gardar'])) {
 
 ?>
 
+=======
+>>>>>>> e681a29e6e581ad4a93168225376faa1d30300c0
 <body>
     <section class="vh-100 gradient-custom">
         <div class="container register-form py-5 h-100"">
@@ -147,6 +150,7 @@ if (isset($_POST['gardar'])) {
                                 </div>
                             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                         </div>
                         <div class="col-md-6 .offset-md-3">
                             <div class="form-group">
@@ -158,6 +162,10 @@ if (isset($_POST['gardar'])) {
                                 <button type="reset" name="gardar" class="btnSubmit">Enviar</button>
                             </div>
                         </div>
+=======
+                        </div>                                                
+                        <button type="button" name="gardar" class="btnSubmit">Enviar</button>                        
+>>>>>>> e681a29e6e581ad4a93168225376faa1d30300c0
 =======
                         </div>                                                
                         <button type="button" name="gardar" class="btnSubmit">Enviar</button>                        
