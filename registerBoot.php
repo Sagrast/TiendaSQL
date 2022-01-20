@@ -94,10 +94,9 @@ if (isset($_POST['gardar'])) {
 
 ?>
 
-
 <body>
     <section class="vh-100 gradient-custom">
-        <div class="container register-form">
+        <div class="container register-form py-5 h-100"">
             <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                 <div class="form">
                     <div class="note">
@@ -147,6 +146,7 @@ if (isset($_POST['gardar'])) {
                                     <?php DAO::erro($enderezoError) ?>
                                 </div>
                             </div>
+<<<<<<< HEAD
                         </div>
                         <div class="col-md-6 .offset-md-3">
                             <div class="form-group">
@@ -158,6 +158,10 @@ if (isset($_POST['gardar'])) {
                                 <button type="reset" name="gardar" class="btnSubmit">Enviar</button>
                             </div>
                         </div>
+=======
+                        </div>                                                
+                        <button type="button" name="gardar" class="btnSubmit">Enviar</button>                        
+>>>>>>> e681a29e6e581ad4a93168225376faa1d30300c0
                     </div>
                 </div>
         </div>
