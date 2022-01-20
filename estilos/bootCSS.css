@@ -33,6 +33,7 @@
   border-radius: 1.5rem;
 }
 .btnSubmit {
+  margin: auto;
   border: none;
   border-radius: 1.5rem;
   padding: 1%;
