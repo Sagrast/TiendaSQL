@@ -271,6 +271,38 @@ class DAO
         }
     }
 
+ /*
+  ----------------------------------------- Actualizar Usuarios ---------------------------------
+ */    
+    public static function updateUserBDD($datos,$id){
+        $ok = true;
+        $conexion = new Connect();
+        $con = $conexion->conexion();
+        $con->beginTransaction();
+        //Preparacion da consulta;
+        $update = $con->prepare("UPDATE usuarios SET userLogin = :userLogin, contrasinal = :contrasinal, nome = :nome, enderezo = :enderezo,email = :email WHERE codigoUser = :codigo");
+        //Enlazar parametros.        
+        $login = $datos->getLogin();
+        $pass = $datos->getContrasinal();
+        $nome = $datos->getNome();
+        $enderezo = $datos->getEnderezo();
+        $mail = $datos->getEmail();        
+        $update->bindParam(':userLogin', $login);
+        $update->bindParam(':contrasinal', $pass);
+        $update->bindParam(':nome', $nome);
+        $update->bindParam(':enderezo', $enderezo);
+        $update->bindParam(':email', $mail);
+        $update->bindParam(':codigo',$id);
+        if ($update->execute() == 0) {
+            $ok = false;
+        }
+
+        if ($ok) {
+            $con->commit();
+        } else {
+            $con->rollBack();
+        }
+    }
 
     /*
   -------------------------------------- COMPARAR HASH BDD------------------------------------------
@@ -348,7 +380,26 @@ class DAO
         return $existe;
     }
 
+    public static function buscarUserBDD($codigo)
+    {
+        $conexion = new Connect();
+        $con = $conexion->conexion();
+        //Preparamos consulta.
+        $query = $con->prepare("SELECT * from usuarios WHERE codigoUser = :codigo");
+        $query->bindParam(":codigo", $codigo);
+        $query->execute();
+        $resultado =  $query->fetch(PDO::FETCH_ASSOC);
+        //Instanciamos un novo usuario
 
+        $user = new Users($resultado['rol'], $resultado['userLogin'], $resultado['contrasinal'], $resultado['nome'], $resultado['enderezo'], $resultado['email']);
+        //Devolvemos o obxeto usuarios.   
+        $user->setCodigo($resultado['codigoUser']);
+
+        var_dump($user);
+        return $user;
+    }
+
+   
 
 
     /*
@@ -363,7 +414,7 @@ class DAO
   -------------------------------------- ENCRIPTAR CONTRASEÑA ----------------------------------------
  */
 
-    function codificar($pass)
+    public static function codificar($pass)
     {
         //Generamos un salt a través de la función password_hash.
         //Recibe como parametro la contraseña y el tipo de hash que usará 
@@ -376,7 +427,7 @@ class DAO
   -------------------------------------- VALIDAR TEXTO ----------------------------------------
  */
 
-    function validarTexto($texto)
+    public static function validarTexto($texto)
     {
         //Comprueba que se introduzcan letras de la A-Z sin diferenciar mayuscuas y minusculas y números.
         //Devuelve 1 o 0
@@ -387,7 +438,7 @@ class DAO
   -------------------------------------- VALIDAR CONTRASEÑA ----------------------------------------
  */
 
-    function validarPass($pass)
+    public static function validarPass($pass)
     {
         //Expresión regular para verificar la contraseña.
         //Devuelve true or false
@@ -431,7 +482,7 @@ class DAO
   -------------------------------------- VALIDAR EMAIL ------------------------------------------
  */
 
-    function validarEmail($correo)
+    public static function validarEmail($correo)
     {
         return filter_var($correo, FILTER_VALIDATE_EMAIL);
     }

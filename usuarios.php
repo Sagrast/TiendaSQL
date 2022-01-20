@@ -101,82 +101,84 @@ if (isset($_POST['engadir'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">    
-        <title>Usuarios</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <?php
-        if (isset($_COOKIE['estilo'])) {
-            echo '<link rel="styleSheet" href="' . $_COOKIE['estilo'] . '"/>';
-        } else {
-            echo '<link rel="stylesheet" href="./estilos/style.css"/>';
-        }
-        ?>
-    </head>
-    <body style="font-size: <?php
-    if (isset($_COOKIE['fuente'])) {
-        echo $_COOKIE['fuente'];
-    }
-    ?>px ">    
-        <h1>Novo Usuario</h1>
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-            <select id="rol" name="rol"/>            
-            <option value="">(Selecciona un Rol)</option>            
-            <?php
-            //Creamos un array de roles por si hubiese que ampliar roles en un futuro.
-            $roles = array("Administrador", "Usuario");
-            foreach ($roles as $rol) {
-                echo '<option value="' . $rol . '">' . $rol . '</option>';
-            }
-            ?>
-            <br/>
-        </select>
-        <?php DAO::erro($rolError) ?>
+<?php
+include_once "./recursos/head.php";
+?>
 
-        <br/>
-        <label for="usuario">Usuario</label><br/>
-        <input type="text" name="login" value="<?php
-        if (isset($_POST['usuario'])) {
-            echo $_POST['usuario'];
-        }
-        ?>" class="usuario"/>
-               <?php DAO::erro($loginError) ?>
-        <br/>
-        <label for="contrasinal">Contrasinal</label><br/>
-        <input type="password" name="contrasinal" class="contrasinal"/>
-        <br/>
-        <?php DAO::erro($contrasinalError) ?>
-        <br/>
-        <label for="nomeCompleto">Nome e Apelidos</label>
-        <input type="text" name="nomeCompleto" class="usuario" value="<?php
-        if (isset($_POST['nomeCompleto'])) {
-            echo $_POST['nomeCompleto'];
-        }
-        ?>"/>
-               <?php DAO::erro($nomeCompError) ?>
-        <label for="direccion">Direccion</label>
-        <input type="text" class="usuario" name="direccion" value="<?php
-        if (isset($_POST['direccion'])) {
-            echo $_POST['direccion'];
-        }
-        ?>"/>            
-               <?php DAO::erro($direccionError) ?>
-        <label for ="correo">Email</label>
-        <input type="text" class="usuario" name="correo" value="<?php
-        if (isset($_POST['correo'])) {
-            echo $_POST['correo'];
-        }
-        ?>"/>
-               <?php DAO::erro($correoError) ?>
-        <br/>
-        <input type="submit" value="engadir" name="engadir"/>
-    </form>
+<body style="font-size: <?php
+                        if (isset($_COOKIE['fuente'])) {
+                            echo $_COOKIE['fuente'];
+                        }
+                        ?>px ">
 
-    <br/>
+    <section class="gradient-custom">
+        <div class="container register-form">
+            <div class="form">
+                <div class="note">
+                    <h1>Novo Usuario</h1>
+                </div>
+                <div class="form-content">
+                    <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                        <select id="rol" name="rol" />
+                        <option class="form-select" value="">(Selecciona un Rol)</option>
+                        <?php
+                        //Creamos un array de roles por si hubiese que ampliar roles en un futuro.
+                        $roles = array("Administrador", "Usuario");
+                        foreach ($roles as $rol) {
+                            echo '<option value="' . $rol . '">' . $rol . '</option>';
+                        }
+                        ?>
+                        <br />
+                        </select>
+                        <?php DAO::erro($rolError) ?>
 
-    <table class="lista">
+                        <br />
+                        <label for="usuario">Usuario</label><br />
+                        <input type="text" name="login" value="<?php
+                                                                if (isset($_POST['usuario'])) {
+                                                                    echo $_POST['usuario'];
+                                                                }
+                                                                ?>" class="usuario" />
+                        <?php DAO::erro($loginError) ?>
+                        <br />
+                        <label for="contrasinal">Contrasinal</label><br />
+                        <input type="password" name="contrasinal" class="contrasinal" />
+                        <br />
+                        <?php DAO::erro($contrasinalError) ?>
+                        <br />
+                        <label for="nomeCompleto">Nome e Apelidos</label>
+                        <input type="text" name="nomeCompleto" class="usuario" value="<?php
+                                                                                        if (isset($_POST['nomeCompleto'])) {
+                                                                                            echo $_POST['nomeCompleto'];
+                                                                                        }
+                                                                                        ?>" />
+                        <?php DAO::erro($nomeCompError) ?>
+                        <label for="direccion">Direccion</label>
+                        <input type="text" class="usuario" name="direccion" value="<?php
+                                                                                    if (isset($_POST['direccion'])) {
+                                                                                        echo $_POST['direccion'];
+                                                                                    }
+                                                                                    ?>" />
+                        <?php DAO::erro($direccionError) ?>
+                        <label for="correo">Email</label>
+                        <input type="text" class="usuario" name="correo" value="<?php
+                                                                                if (isset($_POST['correo'])) {
+                                                                                    echo $_POST['correo'];
+                                                                                }
+                                                                                ?>" />
+                        <?php DAO::erro($correoError) ?>
+                        <br />
+                        <input type="submit" value="engadir" name="engadir" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <br />
+
+    <table class="table table-striped table-dark">
         <tr>
             <th>Rol</th>
             <th>Login</th>
@@ -187,23 +189,25 @@ if (isset($_POST['engadir'])) {
             <th>Operacions</th>
         </tr>
         <?php
-//Creación de la tabla.    
+        //Creación de la tabla.    
         $contFila = 0;
         foreach ($database as $datos) {
-            ?>
+        ?>
             <tr>
                 <td><?php echo $datos->getRol() ?></td>
                 <td><?php echo $datos->getLogin() ?></td>
                 <td><?php echo $datos->getContrasinal() ?></td>
                 <td><?php echo $datos->getNome() ?></td>
                 <td><?php echo $datos->getEnderezo() ?></td>
-                <td><?php echo $datos->getEmail() ?></td>                                
-                <td><a href="borrarUsuario.php?id=<?php echo $datos->getCodigo(); ?>">Eliminar</a></td>
+                <td><?php echo $datos->getEmail() ?></td>
+                <td><a href="borrarUsuario.php?id=<?php echo $datos->getCodigo(); ?>">Eliminar </a> /
+                <a href="updateUser.php?id=<?php echo $datos->getCodigo(); ?>"> Modificar</a></td>
             </tr>
-            <?php            
+        <?php
         }
-        ?>    
+        ?>
     </table>
 
 </body>
+
 </html>
