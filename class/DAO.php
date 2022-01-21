@@ -159,7 +159,7 @@ class DAO
  */
 
     //Recibe una ID y ejecuta una consulta SQL.
-    public static function deleteBDD($id)
+    public static function deleteUserBDD($id)
     {
         //Al igual que en metodos anteriores, repetimos los pasospara preparar la conexión a la BDD 
         //a través de su clase.
@@ -183,7 +183,39 @@ class DAO
         } else {
             $con->rollBack();
         }
-        //$delete->execute();    
+        
+    }
+
+      /*
+  -------------------------------------- BORRAR Producto ----------------------------------------
+ */
+
+    //Recibe una ID y ejecuta una consulta SQL.
+    public static function deleteProdBDD($id)
+    {
+        //Al igual que en metodos anteriores, repetimos los pasospara preparar la conexión a la BDD 
+        //a través de su clase.
+        $ok = true;
+        $conexion = new Connect();
+        $con = $conexion->conexion();
+        //Se abre una transaccion.
+        $con->beginTransaction();
+        //Preparamos la consulta que vamos a lanzar
+        $delete = $con->prepare('DELETE FROM productos WHERE codigoProd = (:codigo)');
+        //Asociamos el parametro :codigo, con la $id que recibe la función.
+        $delete->bindParam(":codigo", $id);
+        //Se ejecuta la consulta y si el resultado es igual a 0 cambiamos la variable OK a falsa.
+        if ($delete->execute() == 0) {
+            $ok = false;
+        }
+
+        //Si todo ha ido bien $ok sigue en True, se confirma la transacción. De lo contrario revertimos los cambios.
+        if ($ok) {
+            $con->commit();
+        } else {
+            $con->rollBack();
+        }
+         
     }
     /*
   -------------------------------------- Escribir USUARIOS BDD ----------------------------------------
@@ -228,7 +260,7 @@ class DAO
   ----------------------------------------- Escribir Cesta --------------------------------- 
  */
 
-    function escribirProductosBDD($productos)
+    public static function escribirProductosBDD($productos)
     {
         $ok = true;
         //Preparación de la conexión, inicio de transacción y consulta.

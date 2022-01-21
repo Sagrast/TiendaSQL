@@ -8,7 +8,7 @@
 include "./class/DAO.php";
 include "./functions/form.php";
 include_once "./class/Users.class.php";
-include_once './class/Produtos.class.php';
+include_once "./class/Produtos.class.php";
 ?>
 <html>
 
@@ -23,8 +23,9 @@ include "./recursos/head.php";
     //Array que contiene los CSV
     //$database = DAO::userBDD();
     $stock = DAO::productsBDD();
-    //Inicialización de variables.
-
+    //Inicialización de variables dentro del formulario.
+    $codigo = $nome = $descricion = $unidades = $fotos = $prezo = $ive = "";
+    
     $codigoErro = $nomeErro = $descricionErro = $prezoErro = $unidadesErro = $fotosErro = $iveErro = "";
     //Control de Sesiones.
 
@@ -39,17 +40,18 @@ include "./recursos/head.php";
     }
     ?>
     <!-- FORMULARIO ENGADIR PRODUCTOS -->
-    <?php
+    <?php    
     if (isset($_POST['engadir']) && isset($_FILES['fotos'])) {
-        //Inicialización de variables dentro del formulario.
-        $codigo = $nome = $descricion = $unidades = $fotos = $prezo = $ive = "";
+        
         //Array de Errores.
         $formError = array();
         //Comprobaciones Nome
         //Se evalua si el texto es correcto, si no lo es se genera un error.
         if (isset($_POST['nome'])) {
+            
             if (DAO::validarTexto($_POST['nome'])) {
                 $nome = $_POST['nome'];
+                
             } else {
                 $nomeErro = "Nome invalido";
                 array_push($formError, $nomeErro);
@@ -131,20 +133,18 @@ include "./recursos/head.php";
             $fotosErro = "Debe seleccionar unha imaxe";
             array_push($formError, $fotosErro);
         }
-
+        
+        var_dump($fotos,$descricion);
         if (empty($formError)) {
-            $newProduct = new Produtos($nome, $descricion, $unidades, $prezo, $fotos, $ive);
-            if (DAO::escribirProductosBDD($newProduct)) {
-                echo "Inserción correcta";
-            } else {
-                echo "Fallo en la insercion";
-            }
+            $newProduct = new Produtos($nome, $descricion, $unidades, $prezo, $fotos, $ive);                        
+            DAO::escribirProductosBDD($newProduct);
             header("Refresh:0");
         }
     }
+    
     ?>
 
-
+    
     <!-- 
         
         ------------------------------------------------------------------------
@@ -155,7 +155,7 @@ include "./recursos/head.php";
     <h1> Engadir Productos </h1>
  <section class="gradient-custom">
         <div class="container register-form py-5 h-100"">
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"  enctype="multipart/form-data">
                 <div class="form">
                     <div class="note">
                         <p>Benvidos a RetroTenda.</p>
@@ -224,8 +224,8 @@ include "./recursos/head.php";
 
                                 </div>
                             </div>
-                        </div>                                                
-                        <button type="button" name="gardar" class="btnSubmit">Enviar</button>                        
+                        </div>                        
+                        <button type="submit" value="engadir" name="engadir" class="btnSubmit">Enviar</button>                        
                     </div>
                 </div>
         </div>
@@ -248,8 +248,8 @@ include "./recursos/head.php";
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Unidades</th>
-            <th>Prezo</th>
-            <th>Codigo</th>
+            <th>Prezo</th>            
+            <th>Operacions</th>
         </tr>
         <?php
         foreach ($stock as $productos) {
@@ -257,68 +257,20 @@ include "./recursos/head.php";
             <tr>
                 <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                     <td><img class="imgStore" src="<?php echo $productos->getFotos() ?>" /></td>
-                    <td><input type="text" value="<?php echo $productos->getNome(); ?>"></td>
-                    <td><input type="text" value="<?php echo $productos->getDescricion(); ?>" disabled /></td>
-                    <td><input type="text" value="<?php echo $productos->getUnidades(); ?>" disabled /></td>
-                    <td><input type="text" value="<?php echo $productos->getPrezo(); ?>" disabled /></td>
-                    <td><input type="submit" value="<?php echo $productos->getCodigo(); ?>" name='edit' /></td>
+                    <td><?php echo $productos->getNome(); ?></td>
+                    <td><?php echo $productos->getDescricion(); ?></td>
+                    <td><?php echo $productos->getUnidades(); ?>"</td>
+                    <td><?php echo $productos->getPrezo(); ?></td>                    
+                    <td><a href="borrarProd.php?id=<?php echo $productos->getCodigo(); ?>">Eliminar </a> /
+                        <a href="updateProd.php?id=<?php echo $productos->getCodigo(); ?>"> Modificar</a></td>
             </tr>
             </form>
         <?php
         }
         ?>
-        <!-- 
+        
     
-    ------------------------------------------------------------------------
-                        EDICION DE PRODUCTOS
-    ------------------------------------------------------------------------
     
-            -->
-    </table>
-    <!-- VISUALIZACION DE PRODUCTO SELECCIONADO -->
-
-    <?php
-    if (isset($_POST['edit'])) {
-    ?>
-        <table class="lista">
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Unidades</th>
-                <th>Prezo</th>
-                <th>Prezo con IVE</th>
-                <th>Codigo</th>
-            </tr>
-            <?php
-            foreach ($stock as $editProductos) {
-                if ($_POST['edit'] == $editProductos->getCodigo()) {
-                    $newEditPro = new Produtos($editProductos->getCodigo(), $editProductos->getNome(), $editProductos->getDescricion(), $editProductos->getUnidades(), $editProductos->getPrezo(), $editProductos->getFotos(), $editProductos->getIve());
-            ?>
-                    <h3>Edita o produto seleccionado</h3>
-                    <tr>
-                        <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
-                            <td><input name='editimg' value="<?php echo $newEditPro->getFotos() ?>" /></td>
-                            <td><input name="editName" type="text" value="<?php echo $newEditPro->getNome(); ?>"></td>
-                            <td><input name="editDesc" type="text" value="<?php echo $newEditPro->getDescricion(); ?>" /></td>
-                            <td><input name="editUnit" type="text" value="<?php echo $newEditPro->getUnidades(); ?>" /></td>
-                            <td><input name="editPrize" type="text" value="<?php echo $newEditPro->getPrezo(); ?>" /></td>
-                            <td><input name="editPrize" type="text" value="<?php echo $newEditPro->prezoConIVE(); ?>" /></td>
-                            <td><input name="editCode" type="text" value="<?php echo $newEditPro->getCodigo(); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="7"><input type="submit" value="Fin Visualización" name="editConfirm" /></td>
-                    </tr>
-                    </form>
-        <?php
-                }
-            }
-        }
-        if (isset($_Post['editConfirm'])) {
-            header("Refresh:0");
-        }
-        ?>
-        </table>
         </section>
 </body>
 

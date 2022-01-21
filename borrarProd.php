@@ -34,8 +34,8 @@ if (!isset($_SESSION['userSesion'])) {
 
         //Comprobamos que el usuario sea administrador para poder borrar.
         if (DAO::esAdminBDD($_SESSION['userSesion'])) {           
-            DAO::deleteUserBDD($id);            
-            header("Location: usuarios.php");
+            DAO::deleteProdBDD($id);            
+            header("Location: productos.php");
         } else {
             die("Non tes permisos de Administrador. Debe <a href='login.php'>identificarse</a>.<br/>");
         }

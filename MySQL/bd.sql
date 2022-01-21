@@ -68,6 +68,10 @@ CREATE TABLE IF NOT EXISTS pedidos (
         ON UPDATE CASCADE
 );
 
+INSERT INTO pedidos VALUES 
+(NULL,"2021-12-10 10:20:21",100,2),
+(NULL,"2021-11-12 11:34:22",200,3);
+
 /* 
     TABLA Productos - Pedidos
 */
@@ -75,8 +79,8 @@ CREATE TABLE IF NOT EXISTS pedidos (
 DROP TABLE IF EXISTS rel_pedidos;
 
 CREATE TABLE IF NOT EXISTS rel_pedidos (
-    codigoPedidos BIGINT UNSIGNED NOT NULL UNIQUE,
-    codigoProd BIGINT UNSIGNED NOT NULL UNIQUE,
+    codigoPedidos BIGINT UNSIGNED NOT NULL,
+    codigoProd BIGINT UNSIGNED NOT NULL,
     cantidad INT,
     PRIMARY KEY(codigoPedidos,codigoProd),
     CONSTRAINT FK_PEDIDOS
@@ -88,3 +92,8 @@ CREATE TABLE IF NOT EXISTS rel_pedidos (
         REFERENCES productos(codigoProd)
         ON UPDATE CASCADE
 );
+
+INSERT INTO rel_pedidos VALUES 
+(1,2,2),
+(2,3,4);
+

@@ -82,7 +82,7 @@ if (isset($_POST['gardar'])) {
     if (isset($_POST['address'])) {
         $enderezo = $_POST['address'];
     } else {
-        $enderezoError = "Introduzca direccion";
+        $enderezoError = "Introduzca Enderezo";
         array_push($erros, $enderezoError);
     }
 
