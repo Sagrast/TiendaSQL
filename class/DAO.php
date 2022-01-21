@@ -293,6 +293,7 @@ class DAO
         $update->bindParam(':enderezo', $enderezo);
         $update->bindParam(':email', $mail);
         $update->bindParam(':codigo',$id);
+        var_dump($update);
         if ($update->execute() == 0) {
             $ok = false;
         }
