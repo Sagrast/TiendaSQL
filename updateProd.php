@@ -17,102 +17,24 @@ if (!isset($_SESSION['userSesion'])) {
 <?php
 include "./recursos/head.php";
 ?>
-
-<body>
-    <?php
+<?php
     $id = "";
     $adminError = "No eres Administrador";
-    if (!empty($_GET['id']) && isset($_GET['id'])) {
+    if (!empty($_GET['id']) && isset($_GET['id'])){
         $id = $_GET['id'];
-    } else if (isset($_POST['codigo'])) {
+    } else if (isset($_POST['codigo'])){
         $id = $_POST['codigo'];
-    }
+    }    
     $usuario = DAO::buscarUserBDD($id);
     $editLoginError = $editContrasinalError = $editValidarError = $editEnderezoError = $editEmailError = $editNomeError = "";
     $rol = $login = $contrasinal = $validaContrasinal = $nomeCompleto = $enderezo = $email = "";
     $errores = array();
-
-
+        
+    
     ?>
 
-    <?php
-    if (isset($_POST['update'])) {
-        //Login 
-        if (isset($_POST['editLogin'])) {
-            $login = $_POST['editLogin'];
-        } else {
-            $editLoginError = "Login Invalido";
-            array_push($errores, $editLoginError);
-        }
-
-        //Contrasinal
-        if (isset($_POST['verificaContrasinal'])) {
-            $validaContrasinal = $_POST['verificaContrasinal'];
-        } else {
-            $editValidarError = "Debe verificar o contrasinal";
-            array_push($errores, $editValidarError);
-        }
-
-        if (isset($_POST['editContrasinal'])) {
-            if (strcmp($_POST['editContrasinal'], $validaContrasinal) == 0) {
-                if (DAO::validarPass($_POST['editContrasinal'])) {
-                    $contrasinal = DAO::codificar($_POST['editContrasinal']);
-                } else {
-                    $editContrasinalError = "O contrasinal non cumpre os requisitos";
-                    array_push($errores, $editContrasinalError);
-                }
-            } else {
-                $editContrasinalError = "O contrasinal e a verificacion non son iguais";
-                array_push($errores, $editContrasinalError);
-            }
-        }
-
-        //Nome Completo.
-        if (isset($_POST['editNome'])) {
-            if (DAO::validarTexto($_POST['editNome'])) {
-                $nome = $_POST['editNome'];
-            } else {
-                $editNomeError = "O nome non cumple os requisitos";
-                array_push($errores, $editNomeError);
-            }
-        }
-
-        //Email
-
-        if (isset($_POST['editEmail'])) {
-            if (DAO::validarEmail($_POST['editEmail'])) {
-                $email = $_POST['editEmail'];
-            } else {
-                $editEmailError = "O email é invalido";
-                array_push($errores, $editEmailError);
-            }
-        }
-
-        //Enderezo
-
-        if (isset($_POST['editEnderezo'])) {
-            $enderezo = $_POST['editEnderezo'];
-        } else {
-            $editEnderezoError = $_POST['Introduzca Enderezo'];
-            array_push($errores, $editEnderezoError);
-        }
-
-        if (isset($_POST['editRol'])) {
-            $rol = $_POST['editRol'];
-        }
-
-        $codigo = $_POST['codigo'];
-
-        if (empty($errores)) {
-            $editUser = new Users($rol, $login, $contrasinal, $nome, $enderezo, $email);
-            DAO::updateUserBDD($editUser, $codigo);
-        }
-    }
-    if (isset($_POST['volver'])) {
-        header("Location: usuarios.php");
-    }
-    ?>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<body>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div class="form">
             <div class="note">
                 <p>Edición de Usuarios</p>
@@ -120,7 +42,7 @@ include "./recursos/head.php";
         </div>
         <div class="form-content">
             <div class="row">
-                <div class="col-md-6">
+            <div class="col-md-6">
                     <div class="form-group">
                         <input type="text" name="editRol" class="form-control" value="<?php echo $usuario->getRol() ?>">
                         <?php DAO::erro($editLoginError); ?>
