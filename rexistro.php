@@ -86,6 +86,9 @@ if (isset($_POST['gardar'])) {
         array_push($erros, $enderezoError);
     }
 
+    var_dump($_POST);
+    var_dump($erros);
+
     //Si todo está correcto, generamos un nuevo objeto Usuario y lo almacenamos en el CSV.
     if (empty($erros)) {
         form("Usuario", $login, $contrasinal, $nomeCompleto, $enderezo, $email, $database);
@@ -115,7 +118,7 @@ if (isset($_POST['gardar'])) {
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Login" value="<?php if (isset($_POST['login'])) {
+                                    <input type="text" class="form-control" placeholder="Login" name="login" value="<?php if (isset($_POST['login'])) {
                                                                                                             echo $_POST['login'];
                                                                                                         } ?>" />
                                     <?php DAO::erro($loginError) ?>
@@ -124,7 +127,7 @@ if (isset($_POST['gardar'])) {
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="password" class="form-control" name="password" placeholder="Password *" />
+                                    <input type="password" class="form-control" name="pass" placeholder="Password *" />
                                     <?php DAO::erro($contrasinalError) ?>
                                 </div>
                             </div>
@@ -150,7 +153,7 @@ if (isset($_POST['gardar'])) {
                         </div>
                         <div class="col-md-6 .offset-md-3">
                             <div class="form-group">
-                                <button type="submit" name="gardar" class="btnSubmit">Enviar</button>
+                                <button type="submit" name="gardar" value="gardar" class="btnSubmit">Enviar</button>
                             </div>
                         
                             

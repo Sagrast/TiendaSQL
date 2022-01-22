@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS tienda;
 
 CREATE DATABASE IF NOT EXISTS tienda;
 
+use tienda;
+
 /* 
     TABLA USUARIOS
 */
@@ -57,8 +59,8 @@ INSERT INTO productos VALUES
 DROP TABLE IF EXISTS pedidos;
 
 CREATE TABLE IF NOT EXISTS pedidos (
-    codigoPedidos SERIAL,
-    fecha DATETIME,
+    codigoPedidos SERIAL,    
+    cantidad INT,
     precio_total DECIMAL(8,2),
     codigoUser BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(codigoPedidos),
@@ -66,11 +68,17 @@ CREATE TABLE IF NOT EXISTS pedidos (
         FOREIGN KEY (codigoUser)
         REFERENCES usuarios(codigoUser)        
         ON UPDATE CASCADE
+        ON DELETE CASCADE        
 );
 
 INSERT INTO pedidos VALUES 
-(NULL,"2021-12-10 10:20:21",100,2),
-(NULL,"2021-11-12 11:34:22",200,3);
+(NULL,1,100,2),
+(NULL,2,47,4),
+(NULL,3,94,2),
+(NULL,4,50,1),
+(NULL,5,75,5),
+(NULL,6,100,3)
+;
 
 /* 
     TABLA Productos - Pedidos
@@ -81,19 +89,25 @@ DROP TABLE IF EXISTS rel_pedidos;
 CREATE TABLE IF NOT EXISTS rel_pedidos (
     codigoPedidos BIGINT UNSIGNED NOT NULL,
     codigoProd BIGINT UNSIGNED NOT NULL,
-    cantidad INT,
-    PRIMARY KEY(codigoPedidos,codigoProd),
+    fecha DATETIME,
+    PRIMARY KEY(codigoPedidos,codigoProd,fecha),
     CONSTRAINT FK_PEDIDOS
     FOREIGN KEY(codigoPedidos)
         REFERENCES pedidos(codigoPedidos)
-        ON UPDATE CASCADE,
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,        
     CONSTRAINT FK_PRODUCTOS
     	FOREIGN KEY(codigoProd)
         REFERENCES productos(codigoProd)
         ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 INSERT INTO rel_pedidos VALUES 
-(1,2,2),
-(2,3,4);
-
+(1,2,"2021-12-10 10:20:21"),
+(2,3,"2021-11-12 11:34:22"),
+(1,1,"2020-12-12 11:34:22"),
+(2,2,"2019-1-12 1:34:22"),
+(3,3,"2020-1-1 2:34:22"),
+(4,4,"2021-1-1 11:34:22")
+;

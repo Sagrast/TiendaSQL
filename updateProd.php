@@ -18,6 +18,16 @@ if (!isset($_SESSION['userSesion'])) {
 include "./recursos/head.php";
 ?>
 <?php
+if (!isset($_SESSION['userSesion'])) {
+    die(header("location: login.php"));
+} else if (!DAO::esAdminBDD($_SESSION['userSesion'])) {
+    //Si la función esAdmin() devuelve falso, el usuario no podrá entrar en la página.
+    die("Non es administrador. <a href='login.php'>identificarse</a>.<br/>");
+} else {
+    //Incluimos menu.php solo si la sesión está iniciada.
+    include 'menu.php';
+}
+
     $id = "";
     $adminError = "No eres Administrador";
     if (!empty($_GET['id']) && isset($_GET['id'])){

@@ -43,7 +43,8 @@ if (isset($_SESSION['userSesion'])) {
             //inicializamos una variable importe acumular la suma del precio de los productos.
             $importe = 0;
             //Iniciamos un bucle ForEach que recorre los objetos de productos. Y creamos la tabla ce la cesta.
-            $compra = array();            
+            $compra = array();  
+            var_dump($_SESSION['cesta']);
             
             /*
               --------------------------------------------- CODIGO FORMULARIO ----------------------------------------------
@@ -117,7 +118,7 @@ if (isset($_SESSION['userSesion'])) {
     }
     
     if (isset($_POST['pagar'])){
-        DAO::escribirCestaBDD($cestaKeys,$codigo,$importe);
+        var_dump(DAO::escribirCestaBDD($cestaKeys,$codigo,$importe));
         echo "<h3>Compra Realizada con éxito</h3>";
     } else if(isset($_POST['seguir'])){
         header("Location: index.php");

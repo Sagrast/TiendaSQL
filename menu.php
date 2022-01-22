@@ -90,6 +90,7 @@
                     <button><a href="cesta.php">Cesta</a></button>
                     <button><a href="usuarios.php">Usuarios</a></button>
                     <button><a href="productos.php">Productos</a></button>
+                    <button><a href="pedidos.php">Pedidos</a></button>
                     <button><a href="perfil.php">Perfil</a></button>
                     <button><a href="logoff.php">Saír</a></button>
                 </div>
@@ -99,7 +100,7 @@
             </div>
             <div class="links">
                 <button><a href="index.php">Tenda</a></button>
-                <button><a href="cesta.php">Cesta</a></button>            
+                <button><a href="cesta.php">Cesta</a></button>                   
                 <button><a href="perfil.php">Perfil</a></button>
                 <button><a href="logoff.php">Saír</a></button>
             </div>
